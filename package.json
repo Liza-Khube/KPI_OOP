@@ -12,6 +12,10 @@
   "license": "MIT",
   "type": "commonjs",
   "devDependencies": {
-    "electron": "^38.1.0"
+    "electron": "^38.1.2"
+  },
+  "dependencies": {
+    "electron-prompt": "^1.7.0",
+    "prompt-sync": "^4.2.0"
   }
 }

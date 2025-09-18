@@ -5,7 +5,15 @@
     <title>Laboratory work 1. Khubedzheva Elizabeth</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <p>Electron app.</p>
+    <h1>Hello user!</h1>
+    <p id="output-text"></p>
+    <script>
+      const { ipcRenderer } = require("electron");
+      ipcRenderer.on("userText", (event, userText) => {
+        document.getElementById("output-text").textContent =
+          userText !== "" ? "Entered text: " + userText : "No text is entered";
+      });
+    </script>
+    <p id="output-number"></p>
   </body>
 </html>
