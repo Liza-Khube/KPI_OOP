@@ -2,18 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
     <title>Laboratory work 1. Khubedzheva Elizabeth</title>
   </head>
   <body>
     <h1>Hello user!</h1>
     <p id="output-text"></p>
+    <p id="output-number"></p>
     <script>
       const { ipcRenderer } = require("electron");
-      ipcRenderer.on("userText", (event, userText) => {
+      ipcRenderer.on("userText", (event, text) => {
         document.getElementById("output-text").textContent =
-          userText !== "" ? "Entered text: " + userText : "No text is entered";
+          text !== "" ? "Entered text: " + text : "No text is entered";
+      });
+
+      ipcRenderer.on("userNum", (event, number) => {
+        document.getElementById("output-number").textContent =
+          "Selected number: " + number;
       });
     </script>
-    <p id="output-number"></p>
   </body>
 </html>

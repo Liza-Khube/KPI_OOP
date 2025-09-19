@@ -1,0 +1,42 @@
+p {
+  font-size: 18px;
+}
+
+body {
+  font-family: sans-serif;
+  padding: 20px;
+}
+
+h1 {
+  size: 30px;
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5%;
+}
+
+#controls {
+  margin-top: 20px;
+  text-align: right;
+  size: 250px;
+}
+
+#value {
+  font-weight: bold;
+  margin-left: 50%;
+}
+
+#ok {
+  background-color: rgb(57, 118, 230);
+  color: aliceblue;
+}
+
+#container {
+  margin-top: 40px;
+}

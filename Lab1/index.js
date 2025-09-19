@@ -1,8 +1,10 @@
 const { app, BrowserWindow, Menu } = require("electron/main");
 const path = require("node:path");
 const { textField } = require("./module1");
+const { numSlider } = require("./module2");
 
 let mainWin;
+exports.mainWin = mainWin;
 
 const createWindow = () => {
   mainWin = new BrowserWindow({
@@ -21,8 +23,6 @@ const createWindow = () => {
   mainWin.on("closed", () => {
     mainWin = null;
   });
-
-  mainWin.webContents.openDevTools();
 };
 
 app.whenReady().then(() => {
@@ -47,7 +47,15 @@ const menu = [
           textField(mainWin);
         },
       },
-      { label: "Work 2" },
+      {
+        label: "Work 2",
+        click: async () => {
+          const result = await numSlider(mainWin);
+          if (result !== null) {
+            mainWin.webContents.send("userNum", result);
+          }
+        },
+      },
     ],
   },
   {

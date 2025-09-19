@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Select Number</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="container">
+      <p>Choose a number (1-100)</p>
+      <div>
+        <input id="slider" type="range" min="1" max="100" value="50" />
+        <span id="value">50</span>
+      </div>
+      <div id="controls">
+        <button id="cancel">Cancel</button>
+        <button id="ok">OK</button>
+      </div>
+    </div>
+    <script>
+      const { ipcRenderer } = require("electron");
+      const slider = document.getElementById("slider");
+      const display = document.getElementById("value");
+      const okBtn = document.getElementById("ok");
+      const cancelBtn = document.getElementById("cancel");
+
+      slider.addEventListener("input", () => {
+        display.textContent = slider.value;
+      });
+
+      okBtn.addEventListener("click", () => {
+        ipcRenderer.send("slider-value-selected", Number(slider.value));
+      });
+
+      cancelBtn.addEventListener("click", () => {
+        ipcRenderer.send("slider-canceled");
+      });
+    </script>
+  </body>
+</html>
