@@ -35,7 +35,7 @@ class RectShape(Shape):
     def show(self, canvas):
         canvas.create_rectangle(
             self.x1, self.y1, self.x2, self.y2,
-            outline=self.color, width=self.width
+            fill=None, outline=self.color, width=self.width
         )
 
 class EllipseShape(Shape):    

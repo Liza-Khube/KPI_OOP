@@ -75,7 +75,7 @@ class RectEditor(ShapeEditor):
     def create_preview(self, event):
         return self.canvas.create_rectangle(
             self.start_x, self.start_y, event.x, event.y,
-            fill=None, outline="black"
+            outline="black"
         )
     
     def create_shape(self, event) -> Shape:
@@ -87,7 +87,7 @@ class EllipseEditor(ShapeEditor):
         x1, y1, x2, y2 = self.calculate_bounds(event)
         return self.canvas.create_oval(
             x1, y1, x2, y2,
-            fill="pink", outline="black"
+            outline="black"
         )
     
     def create_shape(self, event) -> Shape:
