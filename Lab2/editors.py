@@ -36,7 +36,7 @@ class ShapeEditor(Editor):
         if self.is_drawing:
             if self.temp_id:
                 self.canvas.delete(self.temp_id)
-            self.temp_id = self._create_preview(event)
+            self.temp_id = self.create_preview(event)
     
     def on_mouse_up(self, event) -> Shape:
         if self.is_drawing:
@@ -44,57 +44,57 @@ class ShapeEditor(Editor):
                 self.canvas.delete(self.temp_id)
                 self.temp_id = None
             self.is_drawing = False
-            return self._create_shape(event)
+            return self.create_shape(event)
         return None
     
-    def _create_preview(self, event):
+    def create_preview(self, event):
         return None
     
     @abstractmethod
-    def _create_shape(self, event) -> Shape:
+    def create_shape(self, event) -> Shape:
         pass
 
 
 class PointEditor(ShapeEditor):    
-    def _create_shape(self, event) -> Shape:
+    def create_shape(self, event) -> Shape:
         return PointShape(self.start_x, self.start_y, self.start_x, self.start_y)
 
 
 class LineEditor(ShapeEditor):    
-    def _create_preview(self, event):
+    def create_preview(self, event):
         return self.canvas.create_line(
             self.start_x, self.start_y, event.x, event.y,
             fill="black"
         )
     
-    def _create_shape(self, event) -> Shape:
+    def create_shape(self, event) -> Shape:
         return LineShape(self.start_x, self.start_y, event.x, event.y)
 
 
 class RectEditor(ShapeEditor):    
-    def _create_preview(self, event):
+    def create_preview(self, event):
         return self.canvas.create_rectangle(
             self.start_x, self.start_y, event.x, event.y,
             fill=None, outline="black"
         )
     
-    def _create_shape(self, event) -> Shape:
+    def create_shape(self, event) -> Shape:
         return RectShape(self.start_x, self.start_y, event.x, event.y)
 
 
 class EllipseEditor(ShapeEditor):
-    def _create_preview(self, event):
-        x1, y1, x2, y2 = self._calculate_bounds(event)
+    def create_preview(self, event):
+        x1, y1, x2, y2 = self.calculate_bounds(event)
         return self.canvas.create_oval(
             x1, y1, x2, y2,
             fill="pink", outline="black"
         )
     
-    def _create_shape(self, event) -> Shape:
-        x1, y1, x2, y2 = self._calculate_bounds(event)
+    def create_shape(self, event) -> Shape:
+        x1, y1, x2, y2 = self.calculate_bounds(event)
         return EllipseShape(x1, y1, x2, y2)
     
-    def _calculate_bounds(self, event):
+    def calculate_bounds(self, event):
         dx = abs(event.x - self.start_x)
         dy = abs(event.y - self.start_y)
         
