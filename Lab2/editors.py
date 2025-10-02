@@ -24,9 +24,8 @@ class Editor(ABC):
         pass
 
 class ShapeEditor(Editor):    
-    def __init__(self, canvas: tk.Canvas, shape_class):
+    def __init__(self, canvas: tk.Canvas):
         super().__init__(canvas)
-        self.shape_class = shape_class
         self.temp_id = None
 
 
