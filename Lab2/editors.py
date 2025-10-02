@@ -47,29 +47,17 @@ class ShapeEditor(Editor):
             return self._create_shape(event)
         return None
     
-    @abstractmethod
     def _create_preview(self, event):
-        pass
+        return None
     
     @abstractmethod
     def _create_shape(self, event) -> Shape:
         pass
 
 
-class PointEditor(Editor):    
-    def on_mouse_down(self, event) -> None:
-        self.start_x = event.x
-        self.start_y = event.y
-        self.is_drawing = True
-    
-    def on_mouse_move(self, event) -> None:
-        pass
-    
-    def on_mouse_up(self, event) -> Shape:
-        if self.is_drawing:
-            self.is_drawing = False
-            return PointShape(self.start_x, self.start_y, self.start_x, self.start_y)
-        return None
+class PointEditor(ShapeEditor):    
+    def _create_shape(self, event) -> Shape:
+        return PointShape(self.start_x, self.start_y, self.start_x, self.start_y)
 
 
 class LineEditor(ShapeEditor):    
@@ -87,7 +75,7 @@ class RectEditor(ShapeEditor):
     def _create_preview(self, event):
         return self.canvas.create_rectangle(
             self.start_x, self.start_y, event.x, event.y,
-            outline="black"
+            fill=None, outline="black"
         )
     
     def _create_shape(self, event) -> Shape:
@@ -107,7 +95,6 @@ class EllipseEditor(ShapeEditor):
         return EllipseShape(x1, y1, x2, y2)
     
     def _calculate_bounds(self, event):
-        """Обчислює координати еліпса від центру"""
         dx = abs(event.x - self.start_x)
         dy = abs(event.y - self.start_y)
         
