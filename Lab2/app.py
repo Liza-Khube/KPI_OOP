@@ -17,9 +17,9 @@ class DrawingApp:
         self.current_editor = None
         self.current_tool = None
         
-        self._create_menu()
-        self._create_canvas()
-        self._create_status_bar()
+        self.create_menu()
+        self.create_canvas()
+        self.create_status_bar()
         
         self.editors = {
             'point': PointEditor(self.canvas),
@@ -30,11 +30,11 @@ class DrawingApp:
         
         self.select_tool('point')
         
-        self.canvas.bind("<Button-1>", self._on_mouse_down)
-        self.canvas.bind("<B1-Motion>", self._on_mouse_move)
-        self.canvas.bind("<ButtonRelease-1>", self._on_mouse_up)
+        self.canvas.bind("<Button-1>", self.on_mouse_down)
+        self.canvas.bind("<B1-Motion>", self.on_mouse_move)
+        self.canvas.bind("<ButtonRelease-1>", self.on_mouse_up)
 
-    def _create_menu(self):
+    def create_menu(self):
         menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
         file_menu = tk.Menu(menubar, tearoff=0)
@@ -76,7 +76,7 @@ class DrawingApp:
         menubar.add_cascade(label="Довідка", menu=help_menu)
         help_menu.add_command(label="Про програму", command=self.show_about)
     
-    def _create_canvas(self):
+    def create_canvas(self):
         self.canvas = tk.Canvas(
             self.root, 
             bg="white", 
@@ -84,7 +84,7 @@ class DrawingApp:
         )
         self.canvas.pack(fill=tk.BOTH, expand=True)
     
-    def _create_status_bar(self):
+    def create_status_bar(self):
         self.status_bar = tk.Label(
             self.root, 
             text="Вибрано: Точка | Об'єктів: 0/128",
@@ -98,28 +98,28 @@ class DrawingApp:
         self.current_tool = tool
         self.current_editor = self.editors[tool]
         self.tool_var.set(tool)
-        self._update_status()
+        self.update_status()
     
-    def _on_mouse_down(self, event):
+    def on_mouse_down(self, event):
         if self.current_editor and self.shape_count < self.MAX_SHAPES:
             self.current_editor.on_mouse_down(event)
     
-    def _on_mouse_move(self, event):
+    def on_mouse_move(self, event):
         if self.current_editor:
             self.current_editor.on_mouse_move(event)
     
-    def _on_mouse_up(self, event):
+    def on_mouse_up(self, event):
         if self.current_editor and self.shape_count < self.MAX_SHAPES:
             shape = self.current_editor.on_mouse_up(event)
             if shape:
-                self._add_shape(shape)
+                self.add_shape(shape)
     
-    def _add_shape(self, shape):
+    def add_shape(self, shape):
         if self.shape_count < self.MAX_SHAPES:
             self.shapes[self.shape_count] = shape
             self.shape_count += 1
             shape.show(self.canvas)
-            self._update_status()
+            self.update_status()
         else:
             messagebox.showwarning(
                 "Увага", 
@@ -136,9 +136,9 @@ class DrawingApp:
                 self.canvas.delete("all")
                 self.shapes = [None] * self.MAX_SHAPES
                 self.shape_count = 0
-                self._update_status()
+                self.update_status()
     
-    def _update_status(self):
+    def update_status(self):
         tool_names = {
             'point': 'Точка',
             'line': 'Лінія',
