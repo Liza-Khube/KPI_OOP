@@ -73,7 +73,7 @@ class RectShape(Shape):
 class EllipseShape(Shape):
     def show(self, canvas, is_preview=False):
         style = self._get_style(is_preview, {
-            "fill": "pink", 
+            "fill": "orange", 
             "outline": self.color, 
             "width": self.width
         })
@@ -111,7 +111,7 @@ class CubeShape(RectShape, LineShape):
     PERSPECTIVE_RATIO = 0.4
 
     def __init__(self, x1, y1, x2, y2):
-        Shape.__init__(self, x1, y1, x2, y2, color="purple")
+        Shape.__init__(self, x1, y1, x2, y2, color="blue")
     
     def show(self, canvas, is_preview=False):
         orig_x1, orig_y1 = self.x1, self.y1
