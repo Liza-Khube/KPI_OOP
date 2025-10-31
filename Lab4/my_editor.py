@@ -3,7 +3,7 @@ from tkinter import messagebox
 from shapes import Shape, PointShape, LineShape, RectShape, EllipseShape, LineOOShape, CubeShape
 
 class MyEditor:
-    MAX_SHAPES = 128
+    MAX_SHAPES = 126
     
     def __init__(self, canvas, status_update_callback):
         self.canvas = canvas
@@ -33,7 +33,7 @@ class MyEditor:
         self._ensure_array_exists() 
         
         if self.shape_count >= self.MAX_SHAPES:
-            messagebox.showwarning("Увага", "Досягнуто максимальну кількість об'єктів (128)")
+            messagebox.showwarning("Увага", "Досягнуто максимальну кількість об'єктів (126)")
             return
             
         self.is_drawing = True
