@@ -9,7 +9,7 @@ class DrawingApp:
     
     def __init__(self, root):
         self.root = root
-        self.base_title = "Лабораторна робота 2"
+        self.base_title = "Лабораторна робота 3"
         self.root.title(self.base_title)
         self.root.geometry("950x600")
         
