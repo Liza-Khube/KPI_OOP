@@ -142,7 +142,7 @@ def on_closing():
 
 ensure_files_exist()
 root = tk.Tk()
-root.title("Lab6")
+root.title("Лабораторна робота 6. Хубеджева Єлизавета")
 root.geometry("500x300+50+50")
 
 main_menu = tk.Menu(root)
