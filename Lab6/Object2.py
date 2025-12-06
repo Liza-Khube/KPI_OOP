@@ -1,34 +1,53 @@
 import tkinter as tk
 import random
 import json
-import time
+import socket
+import threading
 
-PARAMS_FILE = "params.json"
-COMMAND_FILE = "command.txt"
+HOST = '127.0.0.1'
+PORT = 65432
 
-def check_for_commands():
+def server_listener():
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.bind((HOST, PORT))
+        s.listen()
+        
+        while True:
+            try:
+                conn, addr = s.accept()
+                with conn:
+                    data = conn.recv(1024)
+                    if not data: continue
+                    
+                    message = data.decode('utf-8')
+
+                    if message == "EXIT":
+                        print("Отримано команду EXIT. Завершення роботи.")
+                        root.after(0, root.destroy)
+                        break
+                    
+                    try:
+                        params = json.loads(message)
+                        done_event = threading.Event()
+                        root.after(0, lambda: perform_generation(params, done_event))
+                        done_event.wait()
+                        conn.sendall(b"DONE")
+                    except json.JSONDecodeError:
+                        pass
+                    
+            except Exception as e:
+                print(f"Server Error: {e}")
+                break
+
+def perform_generation(params, event):
     try:
-        with open(COMMAND_FILE, "r") as f:
-            cmd = f.read().strip()
+        n = params['n']
+        mn = params['min']
+        mx = params['max']
         
-        if cmd == "START_OBJ2":
-            perform_task()
-            
-    except Exception:
-        pass
-    
-    root.after(500, check_for_commands)
-
-def perform_task():
-    try:
-        with open(PARAMS_FILE, "r") as f:
-            data = json.load(f)
-        
-        n = data['n']
-        min_val = data['min']
-        max_val = data['max']
-        
-        numbers = [round(random.uniform(min_val, max_val), 2) for _ in range(n)]
+        numbers = [round(random.uniform(mn, mx), 2) for _ in range(n)]
         
         text_area.delete('1.0', tk.END)
         formatted_text = ""
@@ -42,19 +61,21 @@ def perform_task():
         root.clipboard_append(json.dumps(numbers))
         root.update()
         
-        with open(COMMAND_FILE, "w") as f:
-            f.write("DONE_OBJ2")
-            
+        print("Object2: Згенеровано і записано.")
     except Exception as e:
-        print(f"Object2 Error: {e}")
+        print(f"Error in gen: {e}")
+    finally:
+        event.set()
 
 root = tk.Tk()
 root.title("Object 2")
-root.geometry("450x300+560+50")
+root.geometry("450x300+530+50")
 
-tk.Label(root, text="Object 2 (Generator)", font=("Arial", 13)).pack()
-text_area = tk.Text(root, height=10, width=60, font=("Consolas", 12)) 
-text_area.pack(pady=10)
+tk.Label(root, text="Object 2 (Generator)", font=("Arial", 13, "bold")).pack(pady=5)
+text_area = tk.Text(root, height=12, width=60, font=("Consolas", 10)) 
+text_area.pack(pady=5, padx=10)
 
-root.after(500, check_for_commands)
+t = threading.Thread(target=server_listener, daemon=True)
+t.start()
+
 root.mainloop()
